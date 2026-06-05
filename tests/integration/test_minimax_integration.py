@@ -26,7 +26,7 @@ class _IntegrationSettings(BaseSettings):
     OPENAI_MODEL_ID: str = "gpt-4o-mini"
     OPENAI_API_KEY: str | None = None
     MINIMAX_API_KEY: str | None = None
-    MINIMAX_MODEL_ID: str = "MiniMax-M2.7"
+    MINIMAX_MODEL_ID: str = "MiniMax-M3"
 
 
 # Set up fake package hierarchy to load llm_provider in isolation
@@ -75,7 +75,7 @@ def test_minimax_chat_completion(minimax_api_key):
     s = _IntegrationSettings(
         LLM_PROVIDER="minimax",
         MINIMAX_API_KEY=minimax_api_key,
-        MINIMAX_MODEL_ID="MiniMax-M2.7",
+        MINIMAX_MODEL_ID="MiniMax-M3",
     )
     with patch.object(_mod, "settings", s):
         model = _mod.get_chat_model(temperature=0.5)
@@ -106,7 +106,7 @@ def test_minimax_with_max_tokens(minimax_api_key):
     s = _IntegrationSettings(
         LLM_PROVIDER="minimax",
         MINIMAX_API_KEY=minimax_api_key,
-        MINIMAX_MODEL_ID="MiniMax-M2.7",
+        MINIMAX_MODEL_ID="MiniMax-M3",
     )
     with patch.object(_mod, "settings", s):
         model = _mod.get_chat_model(temperature=0.5, max_tokens=50)

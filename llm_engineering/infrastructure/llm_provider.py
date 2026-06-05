@@ -12,6 +12,7 @@ _PROVIDER_MAX_TOKEN_WINDOWS = {
         "gpt-4o-mini": 128000,
     },
     "minimax": {
+        "MiniMax-M3": 512000,
         "MiniMax-M2.7": 204800,
         "MiniMax-M2.7-highspeed": 204800,
     },

@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     # MiniMax API (OpenAI-compatible, https://platform.minimax.io)
     MINIMAX_API_KEY: str | None = None
-    MINIMAX_MODEL_ID: str = "MiniMax-M2.7"
+    MINIMAX_MODEL_ID: str = "MiniMax-M3"
 
     # Huggingface API
     HUGGINGFACE_ACCESS_TOKEN: str | None = None

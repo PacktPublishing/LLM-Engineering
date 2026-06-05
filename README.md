@@ -260,19 +260,20 @@ OPENAI_API_KEY=your_api_key_here
 # Or use MiniMax
 LLM_PROVIDER=minimax
 MINIMAX_API_KEY=your_api_key_here
-MINIMAX_MODEL_ID=MiniMax-M2.7  # or MiniMax-M2.7-highspeed
+MINIMAX_MODEL_ID=MiniMax-M3  # or MiniMax-M2.7, MiniMax-M2.7-highspeed
 ```
 
 **OpenAI**: Check out this [tutorial](https://platform.openai.com/docs/quickstart) to learn how to get an API key from OpenAI.
 
-**MiniMax**: Get your API key at [platform.minimax.io](https://platform.minimax.io). MiniMax offers two models:
+**MiniMax**: Get your API key at [platform.minimax.io](https://platform.minimax.io). MiniMax offers the following models:
 
 | Model | Description |
 |-------|-------------|
-| `MiniMax-M2.7` | Peak Performance. Ultimate Value. Master the Complex (default) |
-| `MiniMax-M2.7-highspeed` | Same performance, faster and more agile |
+| `MiniMax-M3` | Latest flagship model, 512K context window, up to 128K output, supports image input (default) |
+| `MiniMax-M2.7` | Previous generation flagship model |
+| `MiniMax-M2.7-highspeed` | Previous generation, optimized for speed |
 
-Both models support a 204,800-token context window with up to 192K token output.
+`MiniMax-M3` supports a 512K-token context window with up to 128K token output. `MiniMax-M2.7` and `MiniMax-M2.7-highspeed` support a 204,800-token context window.
 
 #### Hugging Face
 

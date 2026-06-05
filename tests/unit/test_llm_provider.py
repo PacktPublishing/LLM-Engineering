@@ -23,7 +23,7 @@ class _TestSettings(BaseSettings):
     OPENAI_MODEL_ID: str = "gpt-4o-mini"
     OPENAI_API_KEY: str | None = None
     MINIMAX_API_KEY: str | None = None
-    MINIMAX_MODEL_ID: str = "MiniMax-M2.7"
+    MINIMAX_MODEL_ID: str = "MiniMax-M3"
 
 
 # Set up fake package hierarchy to load llm_provider in isolation
@@ -77,12 +77,12 @@ class TestGetChatModel:
             )
 
     def test_minimax_provider_calls_chatopenai_with_base_url(self):
-        s = _s(LLM_PROVIDER="minimax", MINIMAX_API_KEY="mm-key", MINIMAX_MODEL_ID="MiniMax-M2.7")
+        s = _s(LLM_PROVIDER="minimax", MINIMAX_API_KEY="mm-key", MINIMAX_MODEL_ID="MiniMax-M3")
         mock_cls = MagicMock()
         with patch.object(_mod, "settings", s), patch.object(_mod, "ChatOpenAI", mock_cls):
             _mod.get_chat_model(temperature=0.5)
             mock_cls.assert_called_once_with(
-                model="MiniMax-M2.7",
+                model="MiniMax-M3",
                 api_key="mm-key",
                 base_url="https://api.minimax.io/v1",
                 temperature=0.5,
@@ -135,12 +135,12 @@ class TestGetChatModel:
             assert kwargs["max_tokens"] == 100
 
     def test_provider_case_insensitive(self):
-        s = _s(LLM_PROVIDER="MiniMax", MINIMAX_API_KEY="key", MINIMAX_MODEL_ID="MiniMax-M2.7")
+        s = _s(LLM_PROVIDER="MiniMax", MINIMAX_API_KEY="key", MINIMAX_MODEL_ID="MiniMax-M3")
         mock_cls = MagicMock()
         with patch.object(_mod, "settings", s), patch.object(_mod, "ChatOpenAI", mock_cls):
             _mod.get_chat_model()
             _, kwargs = mock_cls.call_args
-            assert kwargs["model"] == "MiniMax-M2.7"
+            assert kwargs["model"] == "MiniMax-M3"
             assert kwargs["base_url"] == "https://api.minimax.io/v1"
 
     def test_openai_no_base_url(self):
@@ -175,6 +175,11 @@ class TestGetMaxTokenWindow:
         with patch.object(_mod, "settings", s):
             assert _mod.get_max_token_window() == int(16385 * 0.90)
 
+    def test_minimax_m3(self):
+        s = _s(LLM_PROVIDER="minimax", MINIMAX_MODEL_ID="MiniMax-M3")
+        with patch.object(_mod, "settings", s):
+            assert _mod.get_max_token_window() == int(512000 * 0.90)
+
     def test_minimax_m27(self):
         s = _s(LLM_PROVIDER="minimax", MINIMAX_MODEL_ID="MiniMax-M2.7")
         with patch.object(_mod, "settings", s):
@@ -198,7 +203,7 @@ class TestDefaults:
         assert _TestSettings().LLM_PROVIDER == "openai"
 
     def test_default_minimax_model(self):
-        assert _TestSettings().MINIMAX_MODEL_ID == "MiniMax-M2.7"
+        assert _TestSettings().MINIMAX_MODEL_ID == "MiniMax-M3"
 
     def test_default_openai_model(self):
         assert _TestSettings().OPENAI_MODEL_ID == "gpt-4o-mini"
