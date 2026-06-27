@@ -479,6 +479,8 @@ You can visualize the results on their self-hosted dashboards if you create a Co
 
 We will mostly stick to free tiers for all the services except for AWS and OpenAI's API, which are both pay-as-you-go services. The cost of running the project once, with our default values, will be roughly ~$25 (most of it comes from using AWS SageMaker for training and inference).
 
+If you want to keep your application on an OpenAI-compatible interface while adding policy checks, approval gates, runtime traces, and usage or cost visibility around deployed models, a control plane such as [Tuning Engines](https://www.tuningengines.com) can sit in front of your inference endpoints without requiring framework-specific application changes.
+
 ## ⚡ Pipelines
 
 All the ML pipelines will be orchestrated behind the scenes by [ZenML](https://www.zenml.io/). A few exceptions exist when running utility scrips, such as exporting or importing from the data warehouse.
