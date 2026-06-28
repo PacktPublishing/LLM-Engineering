@@ -194,6 +194,22 @@ class VectorBaseDocument(BaseModel, Generic[T], ABC):
         return connection.create_collection(collection_name=collection_name, vectors_config=vectors_config)
 
     @classmethod
+    def scroll_for_bm25(cls: Type[T], limit: int = 200, query_filter=None) -> list[T]:
+        """Fetch a batch of documents for BM25 indexing (payload only, no vectors)."""
+        try:
+            records, _ = connection.scroll(
+                collection_name=cls.get_collection_name(),
+                limit=limit,
+                with_payload=True,
+                with_vectors=False,
+                scroll_filter=query_filter,
+            )
+            return [cls.from_record(record) for record in records]
+        except Exception:
+            logger.warning(f"Could not scroll collection '{cls.get_collection_name()}' for BM25.")
+            return []
+
+    @classmethod
     def get_category(cls: Type[T]) -> DataCategory:
         if not hasattr(cls, "Config") or not hasattr(cls.Config, "category"):
             raise ImproperlyConfigured(
