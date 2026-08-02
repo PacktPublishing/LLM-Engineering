@@ -32,6 +32,8 @@ def run_evaluation_on_sagemaker(is_dummy: bool = True) -> None:
     env = {
         "HUGGING_FACE_HUB_TOKEN": settings.HUGGINGFACE_ACCESS_TOKEN,
         "OPENAI_API_KEY": settings.OPENAI_API_KEY,
+        "BASE_URL": settings.BASE_URL,
+        "OPENAI_MODEL_ID": settings.OPENAI_MODEL_ID,
         "DATASET_HUGGINGFACE_WORKSPACE": huggingface_user,
         "MODEL_HUGGINGFACE_WORKSPACE": huggingface_user,
     }

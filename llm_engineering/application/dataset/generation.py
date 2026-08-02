@@ -22,7 +22,7 @@ from .output_parsers import ListPydanticOutputParser
 
 
 class DatasetGenerator(ABC):
-    tokenizer = tiktoken.encoding_for_model(settings.OPENAI_MODEL_ID)
+    tokenizer = tiktoken.get_encoding("cl100k_base")
     dataset_type: DatasetType | None = None
 
     system_prompt_template = """You are a helpful assistant who generates {dataset_format} based on the given context. \
@@ -115,6 +115,7 @@ Provide your response in JSON format.
             assert settings.OPENAI_API_KEY is not None, "OpenAI API key must be set to generate datasets"
 
             llm = ChatOpenAI(
+                base_url=settings.BASE_URL,
                 model=settings.OPENAI_MODEL_ID,
                 api_key=settings.OPENAI_API_KEY,
                 max_tokens=2000 if cls.dataset_type == DatasetType.PREFERENCE else 1200,

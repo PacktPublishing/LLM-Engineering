@@ -14,7 +14,8 @@ OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 DATASET_HUGGINGFACE_WORKSPACE = os.environ["DATASET_HUGGINGFACE_WORKSPACE"]
 MODEL_HUGGINGFACE_WORKSPACE = os.environ["MODEL_HUGGINGFACE_WORKSPACE"]
 IS_DUMMY = os.environ.get("IS_DUMMY", False)
-
+BASE_URL = os.environ["BASE_URL"]
+MODEL_ID = os.environ["OPENAI_MODEL_ID"]
 print("====== EVAL PARAMETERS ======")  # noqa
 print(f"{DATASET_HUGGINGFACE_WORKSPACE=}")  # noqa
 print(f"{MODEL_HUGGINGFACE_WORKSPACE=}")  # noqa
@@ -88,7 +89,7 @@ Provide your evaluation in JSON format with the following structure:
 """
 
     completion = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=MODEL_ID,
         messages=[
             {
                 "role": "system",
@@ -106,7 +107,7 @@ Provide your evaluation in JSON format with the following structure:
 
 
 def evaluate_batch(batch, start_index):
-    client = OpenAI(api_key=OPENAI_API_KEY)
+    client = OpenAI(base_url=BASE_URL, api_key=OPENAI_API_KEY)
     return [(i, evaluate_answer(instr, ans, client)) for i, (instr, ans) in enumerate(batch, start=start_index)]
 
 

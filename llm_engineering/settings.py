@@ -10,8 +10,9 @@ class Settings(BaseSettings):
     # --- Required settings even when working locally. ---
 
     # OpenAI API
-    OPENAI_MODEL_ID: str = "gpt-4o-mini"
+    OPENAI_MODEL_ID: str = "deepseek-v4-flash"
     OPENAI_API_KEY: str | None = None
+    BASE_URL: str = "https://api.deepseek.com"
 
     # Huggingface API
     HUGGINGFACE_ACCESS_TOKEN: str | None = None
