@@ -79,6 +79,7 @@ Here is the directory overview:
 │   ├── infrastructure/ 
 │   ├── model/         
 ├── pipelines/           # ML pipeline definitions
+├── scripts/             # Local setup and verification helpers
 ├── steps/               # Pipeline components
 ├── tests/               # Test examples
 ├── tools/               # Utility scripts
@@ -111,6 +112,8 @@ The code logic and imports flow as follows: `infrastructure` → `model` → `ap
 
 `configs/`: ZenML YAML configuration files to control the execution of pipelines and steps.
 
+`scripts/`: Helper scripts for local development. See [`scripts/local_setup.sh`](scripts/local_setup.sh) to install/verify local prerequisites and start MongoDB + Qdrant.
+
 `code_snippets/`: Independent code examples that can be executed independently.
 
 ## 💻 Installation
@@ -126,6 +129,35 @@ Start by cloning the repository and navigating to the project directory:
 git clone https://github.com/PacktPublishing/LLM-Engineers-Handbook.git
 cd LLM-Engineers-Handbook 
 ```
+
+### Quick local setup & verification
+
+After installing the base tools from the [Local dependencies](#local-dependencies) table (Python 3.11, Poetry 1.8.x, Docker, Git), you can use the helper script to install project deps, create `.env`, start MongoDB + Qdrant, and print a PASS/FAIL checklist:
+
+```bash
+# Verify only (no changes)
+./scripts/local_setup.sh
+
+# Install deps, create .env if missing, start Mongo + Qdrant, then verify
+./scripts/local_setup.sh --setup
+
+# Same as --setup, and also start the local ZenML server
+./scripts/local_setup.sh --setup --with-zenml
+```
+
+The script checks:
+
+- Python 3.11, Poetry, Docker / Compose, Git, Chrome (for crawlers)
+- Poetry virtualenv and core package imports
+- `.env` presence and required API keys (`OPENAI_API_KEY`, `HUGGINGFACE_ACCESS_TOKEN`, `COMET_API_KEY`)
+- MongoDB (`localhost:27017`) and Qdrant (`localhost:6333`) health
+
+Exit code `0` means all required checks passed; `1` means one or more checks failed.
+
+> [!NOTE]
+> You still need to edit `.env` with your real API keys. The script will flag placeholders. Training and full LLM inference still require AWS SageMaker later (see the cloud infrastructure section).
+
+You can also follow the manual steps below if you prefer not to use the helper script.
 
 Next, we have to prepare your Python environment and its adjacent dependencies. 
 
@@ -336,6 +368,13 @@ When running the project locally, we host a MongoDB and Qdrant database using Do
 For ease of use, you can start the whole local development infrastructure with the following command:
 ```bash
 poetry poe local-infrastructure-up
+```
+
+To start only MongoDB + Qdrant (or to verify local readiness end-to-end), you can also use:
+
+```bash
+./scripts/local_setup.sh --setup
+./scripts/local_setup.sh
 ```
 
 Also, you can stop the ZenML server and all the Docker containers using the following command:
